@@ -23,13 +23,18 @@ class Alumno extends Persona{
         return $this->cuatrimestre;
     }
 
+    public function setlegajo($legajo)
+    {
+        $this->legajo= $legajo;
+    }
+
     public function Guardar($path)
     {
         $alumnosList = self::Cargar($path);
         if($alumnosList != null)
         {
             $maxLegajo = self::TraerMayorLegajo($alumnosList);
-            $this->legajo = $maxLegajo + 1;
+            $this->setlegajo($maxLegajo + 1);
             if(!self::ExisteAlumnoEnLista($alumnosList, $this))
             {
                 if(file_exists($path))
