@@ -28,6 +28,11 @@ class Alumno extends Persona{
         $this->legajo= $legajo;
     }
 
+    public function setcuatrimestre($cuatri)
+    {
+        $this->cuatrimestre= $cuatri;
+    }
+
     public function Guardar($path)
     {
         $alumnosList = self::Cargar($path);
@@ -58,6 +63,7 @@ class Alumno extends Persona{
         }
         return false;
     }
+
     public function DevolverJson()
     {
         //json_encode — Retorna la representación JSON del valor dado
@@ -101,7 +107,8 @@ class Alumno extends Persona{
                 {
                     $objeto = json_decode($renglon);//Decodifica un string de JSON(array asociativo)
                     if (isset($objeto)!=null) {
-                        $alumno = new Alumno($objeto->nombre, $objeto->dni, $objeto->legajo, $objeto->cuatrimestre);
+                        $alumno = new Alumno($objeto->parent::getNombre(), $objeto->parent::getDni(), 
+                        $objeto->getlegajo(), $objeto->getcuatrimestre());
                         array_push($alumnosList, $alumno);
                     }
                     //isset -> Determina si una variable está definida y no es NULL
@@ -117,7 +124,7 @@ class Alumno extends Persona{
     {
         foreach ($alumnosList as $alumni)
         {
-            if($alumni->legajo == $alumno->legajo)
+            if($alumni->getlegajo() == $alumno->getlegajo())
                 return true;
         }
         return false;
@@ -130,7 +137,7 @@ class Alumno extends Persona{
         {
             foreach ($alumnosList as $alumni)
             {
-                if($alumni->legajo == $legajo)
+                if($alumni->getlegajo() == $legajo)
                     return $alumni;
             }
         }
@@ -139,11 +146,11 @@ class Alumno extends Persona{
     
     public static function TraerMayorLegajo($alumnosList)
     {
-        $maxLegajo = $alumnosList[0]->legajo;
+        $maxLegajo = $alumnosList[0]->getlegajo();
         foreach ($alumnosList as $alumni)
         {
-            if($alumni->legajo > $maxLegajo)
-                $maxLegajo = $alumni->legajo;
+            if($alumni->getlegajo() > $maxLegajo)
+                $maxLegajo = $alumni->getlegajo();
         }
         return $maxLegajo;
     }
@@ -162,6 +169,7 @@ class Alumno extends Persona{
         }
         return false;
     }
+
     public static function TraerExtensionImagen($files)
     {
         switch ($files["type"])
@@ -233,7 +241,7 @@ class Alumno extends Persona{
             {
                 foreach ($alumnosList as $key => $alumni)
                 {
-                    if($alumni->legajo == $alumnoABorrar->legajo && $alumni->dni == $alumnoABorrar->dni)
+                    if($alumni->getlegajo() == $alumnoABorrar->getlegajo() && $alumni->parent::getDni() == $alumnoABorrar->getDdni())
                     {
                         unset($alumnosList[$key]);
                         break;
@@ -247,15 +255,15 @@ class Alumno extends Persona{
     
     public function MoverImgABackUp($carpetaFotosBackup, $carpetaFotos, $path)
     {
-        $Alumno = self::DevuelveAlumnoxSaboryTipo($path, $this->sabor, $this->tipo);
+        $Alumno = self::DevuelveAlumnoxLegajoYdni($path, $this->getlegajo(), $this->parent::getDni());
             
         if(!$Alumno)
         {
-            echo "<br/>No existe esa Alumno.";
+            echo "<br/>No existe el Alumno.";
             die;
         }
         $extension = ".jpg";        
-        $fotoAlumno= $Alumno->tipo . "_" . $Alumno->sabor . $extension;
+        $fotoAlumno= $Alumno->getlegajo() . "_" . $Alumno->parent::getdni() . $extension;
         $pathFotoOriginal = $carpetaFotos . $fotoAlumno;
             
         if(file_exists($pathFotoOriginal))
@@ -269,6 +277,20 @@ class Alumno extends Persona{
             echo '<br/>Error! no existe la imagen.';
             die;
         }
+    }
+
+    public static function DevuelveAlumnoxLegajoYdni($path, $legajo, $dni)
+    {
+        $alumnosList = self::Cargar($path);
+        if($alumnosList != null)
+        {
+            foreach ($alumnosList as $alum)
+            {
+                if($alum->getlegajo() == $legajo && $alum->parent::getDni() == $dni)
+                    return $alum;
+            }
+        }
+        return null;
     }
 
     public static function ImgAlumnosEnTabla($path)
@@ -293,10 +315,10 @@ class Alumno extends Persona{
 
     public function IsEqual($otroAlumno)
     {
-        return  $this->nombre == $otroAlumno->nombre && 
-                $this->dni == $otroAlumno->dni &&
-                $this->legajo == $otroAlumno->legajo &&
-                $this->cuatrimestre == $otroAlumno->cuatrimestre;
+        return  $this->parent::getNombre() == $otroAlumno->parent::getNombre() && 
+                $this->parent::getDni() == $otroAlumno->parent::getDni() &&
+                $this->getlegajo() == $otroAlumno->getlegajo() &&
+                $this->getcuatrimestre() == $otroAlumno->getcuatrimestre();
     }
 
 }
