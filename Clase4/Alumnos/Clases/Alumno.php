@@ -107,7 +107,7 @@ class Alumno extends Persona{
                 {
                     $objeto = json_decode($renglon);//Decodifica un string de JSON(array asociativo)
                     if (isset($objeto)!=null) {
-                        $alumno = new Alumno($objeto->parent::getNombre(), $objeto->parent::getDni(), 
+                        $alumno = new Alumno($objeto->Persona::getNombre(), $objeto->Persona::getDni(), 
                         $objeto->getlegajo(), $objeto->getcuatrimestre());
                         array_push($alumnosList, $alumno);
                     }
