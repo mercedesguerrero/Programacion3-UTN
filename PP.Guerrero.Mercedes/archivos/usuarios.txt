@@ -1,0 +1,4 @@
+{"legajo":1,"email":"mer@mer.com","nombre":"mercedes","clave":"mercedes"}
+{"legajo":2,"email":"lean@lean.com","nombre":"leandro","clave":"leandro"}
+{"legajo":3,"email":"lean@lean.com","nombre":"leandro","clave":"666"}
+{"legajo":4,"email":"lean@lean.com","nombre":"leandro","clave":"666"}
