@@ -8,10 +8,6 @@ define("RUTA_CARPETA_IMAGENES", "./images/pizzas/");
 define("RUTA_CARPETA_BACKUP", "./images/backup/");
 //$RUTA_CARPETA_IMAGENES = "./img/";
 
-$content= file_get_contents("php://input");
-$method = $_SERVER['REQUEST_METHOD'];
-echo $method . "<br>";
-
 $config['displayErrorDetails']= true;
 $config['addContentLenghtHeader']= false;
 
